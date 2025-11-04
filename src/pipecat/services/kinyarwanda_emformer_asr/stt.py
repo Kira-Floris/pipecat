@@ -24,12 +24,13 @@ from pipecat.utils.time import time_now_iso8601
 from pipecat.utils.tracing.service_decorators import traced_stt
 
 import os
+import torch
 
 if TYPE_CHECKING:
     try:
         import sentencepiece as spm
-        from huggingface_hub import snapshot_download
         import torch
+        from huggingface_hub import snapshot_download
     except ModuleNotFoundError as e:
         logger.error(f"Exception: {e}")
         logger.error("In order to use Kinyarwanda Emformer, you need to `pip install sentencepiece torch transformers`.")
