@@ -131,6 +131,7 @@ class KinyarwandaEmformerSTTService(SegmentedSTTService):
             try:
                 from huggingface_hub import snapshot_download
             except Exception as err:
+                logger.error("In order to use Kinyarwanda Emformer, you need to `pip install huggingface-hub` or `uv pip install huggingface-hub`.")
                 raise BaseException(f"Exception: {err}")
             snapshot_download(
                 self._model_name, local_dir=self._destination_path
@@ -140,7 +141,12 @@ class KinyarwandaEmformerSTTService(SegmentedSTTService):
             self._model = self._model.to(self._device)
             self._model.eval()
             logger.debug("Loaded Kinyarwanda Emformer model")
-
+            
+            try:
+                import sentencepiece as spm
+            except Exception as err:
+                logger.error("In order to use Kinyarwanda Emformer, you need to `pip install sentencepiece` or `sentencepiece`.")
+                raise BaseException(f"Exception: {err}")
             tokenizer_path = os.path.join(self._destination_path, "tokenizer.model")
             self.sp = spm.SentencePieceProcessor(model_file=tokenizer_path)
             logger.debug("Loaded Kinyarwanda Emformer Tokenizer")
