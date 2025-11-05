@@ -82,7 +82,7 @@ class KinyarwandaEmformerSTTService(SegmentedSTTService):
     def __init__(
         self,
         *,
-        device: str = "auto",
+        device: str = torch.device("cuda" if torch.cuda.is_available() else "cpu"),
         compute_type: str = "default",
         no_speech_prob: float = 0.4,
         **kwargs,
