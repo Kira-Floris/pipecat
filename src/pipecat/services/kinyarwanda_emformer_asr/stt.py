@@ -128,6 +128,10 @@ class KinyarwandaEmformerSTTService(SegmentedSTTService):
         """
         try:
             logger.debug("Loading Kinyarwanda Emformer model...")
+            try:
+                from huggingface_hub import snapshot_download
+            except Exception as err:
+                raise BaseException(f"Exception: {err}")
             snapshot_download(
                 self._model_name, local_dir=self._destination_path
             )
