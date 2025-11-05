@@ -100,8 +100,8 @@ class KinyarwandaEmformerSTTService(SegmentedSTTService):
         self._compute_type = compute_type
         self._no_speech_prob = no_speech_prob
         self._model: Optional[torch.jit.load] = None
-        self.model_name = "DigitalUmuganda/Emformer_afrivoice"
-        self.destination_path = "./Emformer_afrivoice"
+        self._model_name = "DigitalUmuganda/Emformer_afrivoice"
+        self._destination_path = "./Emformer_afrivoice"
 
         self._settings = {
             "device": self._device,
@@ -129,15 +129,15 @@ class KinyarwandaEmformerSTTService(SegmentedSTTService):
         try:
             logger.debug("Loading Kinyarwanda Emformer model...")
             snapshot_download(
-                self.model_name, local_dir=self.destination_path
+                self._model_name, local_dir=self._destination_path
             )
-            model_path = os.path.join(self.destination_path, "scripted_bundle.pt")
+            model_path = os.path.join(self._destination_path, "scripted_bundle.pt")
             self._model = torch.jit.load(model_path)
             self._model = self._model.to(self._device)
             self._model.eval()
             logger.debug("Loaded Kinyarwanda Emformer model")
 
-            tokenizer_path = os.path.join(self.destination_path, "tokenizer.model")
+            tokenizer_path = os.path.join(self._destination_path, "tokenizer.model")
             self.sp = spm.SentencePieceProcessor(model_file=tokenizer_path)
             logger.debug("Loaded Kinyarwanda Emformer Tokenizer")
 
